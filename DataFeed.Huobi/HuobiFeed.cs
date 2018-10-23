@@ -23,14 +23,14 @@ namespace DataFeed.Huobi
         ConcurrentDictionary<string, Tick> feedTickMap = new ConcurrentDictionary<string, Tick>();
 
         WebSocket socket;
-        public override string Exchange
-        {
-            get
-            {
-                return "HUOBI";
-            }
-        }
+
         const string HUOBI_WEBSOCKET_API = "ws://api.huobi.pro/ws";
+        Regex MATCH_TRADE = new Regex(@"^market.*.trade.detail$", RegexOptions.Compiled);
+        Regex MATCH_QUOTE = new Regex(@"^market.*.depth.step", RegexOptions.Compiled);
+
+        public override string Exchange { get { return "HUOBI"; } }
+
+        DateTime _connectedTime = DateTime.Now;
 
         public HuobiFeed(TickPot tickpot, string master, int qryport):
             base(tickpot,master,qryport)
@@ -55,14 +55,32 @@ namespace DataFeed.Huobi
         
         }
 
-        void socket_OnError(object sender, ErrorEventArgs e)
+        public override void Stop()
         {
-            //throw new NotImplementedException();
+            if (socket != null)
+            {
+                if (socket.IsAlive)
+                {
+                    socket.Close();
+                }
+
+                socket.OnOpen -= new EventHandler(socket_OnOpen);
+                socket.OnClose -= new EventHandler<CloseEventArgs>(socket_OnClose);
+                socket.OnMessage -= new EventHandler<MessageEventArgs>(socket_OnMessage);
+                socket.OnError -= new EventHandler<ErrorEventArgs>(socket_OnError);
+            }
         }
 
-        Regex MATCH_TRADE = new Regex(@"^market.*.trade.detail$", RegexOptions.Compiled);
-        Regex MATCH_QUOTE = new Regex(@"^market.*.depth.step", RegexOptions.Compiled);
 
+        #region socket event
+
+        void socket_OnError(object sender, ErrorEventArgs e)
+        {
+            if (socket != null)
+            {
+                socket.Close();
+            }
+        }
 
         void socket_OnMessage(object sender, MessageEventArgs e)
         {
@@ -147,36 +165,45 @@ namespace DataFeed.Huobi
 
         }
 
-
-
         void socket_OnClose(object sender, CloseEventArgs e)
         {
-            //throw new NotImplementedException();
-            logger.Info("Connection Close");
+            logger.Info("WS Connection Closed");
+
+            //链接建立超过一定时间则直接进行重链,否则等待一定时间避免频繁重链
+            if (DateTime.Now.Subtract(_connectedTime).TotalSeconds > 5)
+            {
+                Reconnect(0);
+            }
+            else
+            {
+                Reconnect(5);
+            }
+        }
+
+        void Reconnect(int waitSecend)
+        {
+            System.Threading.ThreadPool.QueueUserWorkItem((o) =>
+            {
+                this.Stop();
+                System.Threading.Thread.Sleep(waitSecend * 1000);
+                this.Start();
+            });
         }
 
         void socket_OnOpen(object sender, EventArgs e)
         {
-            //throw new NotImplementedException();
-            logger.Info("Connection Open");
+            logger.Info("WS Connection Opened");
+            _connectedTime = DateTime.Now;
             this.OnConnected();
-
-            //this.SubMarketData("ETH/USDT");
         }
 
-        public override void Stop()
-        {
-            if (socket != null)
-            {
-                socket.Close();
+        #endregion
 
-                socket.OnOpen -= new EventHandler(socket_OnOpen);
-                socket.OnClose -= new EventHandler<CloseEventArgs>(socket_OnClose);
-                socket.OnMessage -= new EventHandler<MessageEventArgs>(socket_OnMessage);
-                socket.OnError -= new EventHandler<ErrorEventArgs>(socket_OnError);
-            }
-        }
 
+        #region sub/unsub market data
+        const string MARKET_DEPTH = "market.{0}.depth.step0";
+        const string MARKET_TRADE_DETAIL = "market.{0}.trade.detail";
+        const string MARKET_DETAIL = "market.{0}.detail";
 
         public override void SubMarketData(string symbol)
         {
@@ -202,10 +229,6 @@ namespace DataFeed.Huobi
             //}
         }
 
-        const string MARKET_DEPTH = "market.{0}.depth.step0";
-        const string MARKET_TRADE_DETAIL = "market.{0}.trade.detail";
-        const string MARKET_DETAIL = "market.{0}.detail";
-
         void Subscribe(string topic, string id)
         {
             var subReq = new { sub = topic, id = id };
@@ -217,9 +240,11 @@ namespace DataFeed.Huobi
         /// </summary>
         /// <param name="symbol"></param>
         public void Unsubscribe(string symbol)
-        { 
-        
+        {
+
         }
+        #endregion
+
     }
 
 }

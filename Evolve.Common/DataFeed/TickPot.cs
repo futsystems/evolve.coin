@@ -98,7 +98,7 @@ namespace Evolve.Common
             {
                 string masterAddress = string.Format("tcp://{0}:{1}", _master, _port);
                 masterPub.Connect(masterAddress);
-                logger.Info(string.Format("TickPubSrv Start Pub Socket:{0}", masterAddress));
+                logger.Info(string.Format("Start Pub Socket:{0}", masterAddress));
 
                 //string slaveAddress = string.Format("tcp://{0}:{1}", _slave, _port);
                 //slavePub.Connect(slaveAddress);

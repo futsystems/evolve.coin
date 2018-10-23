@@ -12,7 +12,7 @@ namespace Evolve.UI
     public delegate void DebugDelegate(string msg);
     public partial class DebugControl : UserControl
     {
-        bool _timestamp = true;
+        bool _timestamp = false;
         public bool TimeStamps { get { return _timestamp; } set { _timestamp = value; } }
         public DebugControl() : this(true) { }
         public DebugControl(bool timestamp)

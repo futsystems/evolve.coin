@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Evolve.Common;
+using Common.Logging;
 
 namespace APIClient
 {
     public partial class Form1 : Form
     {
+
+        ILog logger = LogManager.GetLogger("Form1");
         public Form1()
         {
             InitializeComponent();
@@ -61,17 +64,17 @@ namespace APIClient
 
         void dataClient_OnTick(Tick obj)
         {
-            debug(obj.ToString());
+            logger.Info(obj.ToString());
         }
 
         void dataClient_OnDisconnected()
         {
-            debug("Data Client Connected");
+            logger.Info("Data Client Connected");
         }
 
         void dataClient_OnConnected()
         {
-            debug("Data Client Disconnect");
+            logger.Info("Data Client Disconnect");
         }
 
         void debug(string msg)

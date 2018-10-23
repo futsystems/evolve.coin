@@ -20,18 +20,20 @@ namespace Evolve.Common
 
         public virtual string Exchange { get { return "DEFAULT"; } }
 
+        ThreadSafeList<string> symbolRegisterList = new ThreadSafeList<string>();
+
         public DataFeedBase(TickPot tickpot, string master,int qryport)
         {
+            logger = LogManager.GetLogger(this.Exchange);
+
             _tickpot = tickpot;
             _master = master;
             _qryport = qryport;
-
-            logger = LogManager.GetLogger(this.Exchange);
         }
 
 
 
-        ThreadSafeList<string> symbolRegisterList = new ThreadSafeList<string>();
+        
 
 
         /// <summary>
@@ -48,7 +50,6 @@ namespace Evolve.Common
                 {
                     if (symbolRegisterList.Contains(symbol))
                         continue;
-
                     try
                     {
                         this.SubMarketData(symbol);
@@ -78,7 +79,7 @@ namespace Evolve.Common
         /// </summary>
         public virtual void Start()
         {
-            OnConnected();
+        
         }
 
         /// <summary>
