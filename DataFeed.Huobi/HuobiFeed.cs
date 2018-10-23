@@ -13,13 +13,13 @@ using Evolve.Common;
 
 namespace DataFeed.Huobi
 {
+
+    /// <summary>
+    /// 建立DataFeed通过统一的父类函数实现业务调用
+    /// 其他交易所的行情源可以参考该类实现
+    /// </summary>
     public class HuobiFeed:DataFeedBase
     {
-
-        
-
-        public event Action<Tick> TickEvent;
-
         ConcurrentDictionary<string, Tick> feedTickMap = new ConcurrentDictionary<string, Tick>();
 
         WebSocket socket;
