@@ -101,8 +101,8 @@ namespace Evolve.Common
                 this.SubMarketData(symbol);
             }
 
-            //logger.Info("Restore Symbol Registers from TickPubSrv");
-            //this.QrySymbolsRegisted();
+            logger.Info("Restore Symbol Registers from TickPubSrv");
+            this.QrySymbolsRegisted();
         }
 
         /// <summary>
@@ -133,6 +133,7 @@ namespace Evolve.Common
                 using (NetMQ.Sockets.RequestSocket masterQrySocket = new NetMQ.Sockets.RequestSocket())
                 {
                     MDQrySymbolRegistedRequest request = Message.NewRequest<MDQrySymbolRegistedRequest>();
+                    request.Exchange = this.Exchange;
                     try
                     {
                         string masterAddress = string.Format("tcp://{0}:{1}", _master, _qryport);
@@ -149,7 +150,7 @@ namespace Evolve.Common
                             {
                                 var content = frame.ConvertToString();
                                 Message msg = Message.Deserialize(frame.ConvertToString());
-                                logger.Info("Got Message Type:" + msg.Type.ToString() + " Content:" + content);
+                                logger.Info("Got Content:" + content);
 
                                 if (msg != null)
                                 {
@@ -169,10 +170,11 @@ namespace Evolve.Common
 
                     foreach (var p in packetlist)
                     {
-                        if (p.Type == MessageType.MD_QRY_REGISTED_SYMBOL)
+                        if (p.Type == MessageType.MD_RSP_REGISTED_SYMBOL)
                         {
                             MDQrySymbolRegistedResponse response = p as MDQrySymbolRegistedResponse;
-                            if (response.RspInfo.ErrorCode == 0)
+                            
+                            if (response.RspInfo.ErrorCode == 0 && response.Exchange == this.Exchange && response.Symbols.Length >0)
                             {
                                 OnRegisterSymbols(response.Symbols);
                             }

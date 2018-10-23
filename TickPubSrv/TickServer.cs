@@ -41,39 +41,38 @@ namespace TickPubSrv
             using (NetMQ.Sockets.SubscriberSocket subSocket = new NetMQ.Sockets.SubscriberSocket())
             using (NetMQ.Sockets.PublisherSocket pubSocket = new NetMQ.Sockets.PublisherSocket())
             {
+                //SubscriberSocket 从行情源订阅数据
                 string subAddress = "tcp://*:{0}".Put(_subPort);
-
                 logger.Info("TickPubSrv Data Init Sub Service:{0}".Put(subAddress));
-                subSocket.Subscribe("");
+                subSocket.Subscribe("");//订阅所有行情数据
                 subSocket.Bind(subAddress);
 
+                //PublisherSocket 下发所有行情数据
                 string subPubAddress = "tcp://*:{0}".Put(_pubPort);
                 logger.Info("TickPubSrv Data Init Pub Service:{0}".Put(subPubAddress));
                 pubSocket.Bind(subPubAddress);
 
+                //定时发送心跳数据
                 NetMQTimer timer = new NetMQTimer(TimeSpan.FromSeconds(1));
 
                 NetMQ.NetMQPoller poller = new NetMQ.NetMQPoller { subSocket, pubSocket,timer};
 
                 subSocket.ReceiveReady += (s, a) =>
-                    {
-                        var msg = a.Socket.ReceiveMultipartMessage();
-                        var msgString = msg.First.ConvertToString();
-                        if (msgString.StartsWith("H,"))
-                        {
-                            return;
-                        }
-                        //logger.Info("got data from handler:{0}".Put(msg.First.ConvertToString()));
-                        pubSocket.SendMultipartMessage(msg);
-                    };
-
-                //定时发送心跳
-                timer.Elapsed += (s, e) =>
                 {
-                    //logger.Info("send haertbeat");
-                    pubSocket.SendFrame("H,", false);
+                    var msg = a.Socket.ReceiveMultipartMessage();
+                    var msgString = msg.First.ConvertToString();
+                    if (msgString.StartsWith("H,"))
+                    {
+                        return;
+                    }
+                    //logger.Info("got data from handler:{0}".Put(msg.First.ConvertToString()));
+                    pubSocket.SendMultipartMessage(msg);
                 };
 
+                timer.Elapsed += (s, e) =>
+                {
+                    pubSocket.SendFrame("H,", false);
+                };
 
                 poller.Run();
             }
