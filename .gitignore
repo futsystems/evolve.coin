@@ -30,6 +30,7 @@ Platform/TradingSrv/*.dll
 Platform/TradingSrv/**/*.dll
 Platform/TradingSrv/**/*.dll
 Platform/TradingSrv/Secure/*
+build
 
 
 #bin obj debug release
