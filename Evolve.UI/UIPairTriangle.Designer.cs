@@ -31,13 +31,41 @@
             Evolve.Common.SymbolInfo symbolInfo1 = new Evolve.Common.SymbolInfo();
             Evolve.Common.SymbolInfo symbolInfo2 = new Evolve.Common.SymbolInfo();
             Evolve.Common.SymbolInfo symbolInfo3 = new Evolve.Common.SymbolInfo();
-            this.tickItem3 = new Evolve.UI.TickItem();
-            this.tickItem2 = new Evolve.UI.TickItem();
-            this.tickItem1 = new Evolve.UI.TickItem();
             this.cbidPrice1 = new System.Windows.Forms.Label();
             this.caskPrice1 = new System.Windows.Forms.Label();
             this.cprice = new System.Windows.Forms.Label();
+            this.tickItem3 = new Evolve.UI.TickItem();
+            this.tickItem2 = new Evolve.UI.TickItem();
+            this.tickItem1 = new Evolve.UI.TickItem();
             this.SuspendLayout();
+            // 
+            // cbidPrice1
+            // 
+            this.cbidPrice1.AutoSize = true;
+            this.cbidPrice1.Location = new System.Drawing.Point(379, 143);
+            this.cbidPrice1.Name = "cbidPrice1";
+            this.cbidPrice1.Size = new System.Drawing.Size(47, 12);
+            this.cbidPrice1.TabIndex = 5;
+            this.cbidPrice1.Text = "4600.00";
+            // 
+            // caskPrice1
+            // 
+            this.caskPrice1.AutoSize = true;
+            this.caskPrice1.Location = new System.Drawing.Point(379, 118);
+            this.caskPrice1.Name = "caskPrice1";
+            this.caskPrice1.Size = new System.Drawing.Size(47, 12);
+            this.caskPrice1.TabIndex = 4;
+            this.caskPrice1.Text = "4600.00";
+            // 
+            // cprice
+            // 
+            this.cprice.AutoSize = true;
+            this.cprice.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cprice.Location = new System.Drawing.Point(269, 118);
+            this.cprice.Name = "cprice";
+            this.cprice.Size = new System.Drawing.Size(89, 19);
+            this.cprice.TabIndex = 3;
+            this.cprice.Text = "46700.00";
             // 
             // tickItem3
             // 
@@ -75,38 +103,11 @@
             this.tickItem1.Symbol = symbolInfo3;
             this.tickItem1.TabIndex = 0;
             // 
-            // cbidPrice1
-            // 
-            this.cbidPrice1.AutoSize = true;
-            this.cbidPrice1.Location = new System.Drawing.Point(379, 143);
-            this.cbidPrice1.Name = "cbidPrice1";
-            this.cbidPrice1.Size = new System.Drawing.Size(47, 12);
-            this.cbidPrice1.TabIndex = 5;
-            this.cbidPrice1.Text = "4600.00";
-            // 
-            // caskPrice1
-            // 
-            this.caskPrice1.AutoSize = true;
-            this.caskPrice1.Location = new System.Drawing.Point(379, 118);
-            this.caskPrice1.Name = "caskPrice1";
-            this.caskPrice1.Size = new System.Drawing.Size(47, 12);
-            this.caskPrice1.TabIndex = 4;
-            this.caskPrice1.Text = "4600.00";
-            // 
-            // cprice
-            // 
-            this.cprice.AutoSize = true;
-            this.cprice.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cprice.Location = new System.Drawing.Point(269, 118);
-            this.cprice.Name = "cprice";
-            this.cprice.Size = new System.Drawing.Size(89, 19);
-            this.cprice.TabIndex = 3;
-            this.cprice.Text = "46700.00";
-            // 
             // UIPairTriangle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.cbidPrice1);
             this.Controls.Add(this.caskPrice1);
             this.Controls.Add(this.cprice);
@@ -114,7 +115,7 @@
             this.Controls.Add(this.tickItem2);
             this.Controls.Add(this.tickItem1);
             this.Name = "UIPairTriangle";
-            this.Size = new System.Drawing.Size(487, 215);
+            this.Size = new System.Drawing.Size(432, 205);
             this.ResumeLayout(false);
             this.PerformLayout();
 

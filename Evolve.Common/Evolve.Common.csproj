@@ -67,6 +67,7 @@
     <Compile Include="EnumTickType.cs" />
     <Compile Include="EnumTradeDirection.cs" />
     <Compile Include="Exchange.cs" />
+    <Compile Include="GroupTriangle.cs" />
     <Compile Include="GZip.cs" />
     <Compile Include="Message\MDQrySymbolRegisted.cs" />
     <Compile Include="Message\Message.cs" />

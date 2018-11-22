@@ -39,6 +39,18 @@ namespace Evolve.UI
                 }
             }
         }
+        const string NULL = "Null";
+
+        public void Reset()
+        {
+            this.price.Text = NULL;
+            this.askPrice1.Text = NULL;
+            this.bidPrice1.Text = NULL;
+
+            this.size.Text = NULL;
+            this.askSize1.Text = NULL;
+            this.bidSize1.Text = NULL;
+        }
 
         public void GotTick(Tick k)
         {

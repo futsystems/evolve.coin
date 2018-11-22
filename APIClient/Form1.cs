@@ -29,6 +29,21 @@ namespace APIClient
             md_exchange.Items.Add("BINANCE");
             md_exchange.SelectedIndex = 0;
 
+
+            cbExchange1.Items.Add("HUOBI");
+            cbExchange1.Items.Add("BINANCE");
+            cbExchange1.SelectedIndex = 0;
+
+            cbExchange2.Items.Add("HUOBI");
+            cbExchange2.Items.Add("BINANCE");
+            cbExchange2.SelectedIndex =1;
+
+            //flowLayoutPanel1.AutoScroll = false;
+            //flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            //flowLayoutPanel1.WrapContents = false;
+            //flowLayoutPanel1.HorizontalScroll.Maximum = 0; // 把水平滚动范围设成0就看不到水平滚动条了
+            flowLayoutPanel1.AutoScroll = true; // 注意启用滚动的顺序，应是完成设置的最后一条语句
+
         }
 
         DataClient dataClient = null;
@@ -41,6 +56,70 @@ namespace APIClient
             btnWatchTriVET.Click += BtnWatchTriVET_Click;
             btnWatchSTEEM.Click += BtnWatchSTEEM_Click;
             btnWatch.Click += BtnWatch_Click;
+            btnAddGroup.Click += BtnAddGroup_Click;
+        }
+
+        Dictionary<string, GroupTriangle> groupTriangleMap = new Dictionary<string, GroupTriangle>();
+
+        Dictionary<string, Evolve.UI.UIPairTriangle> uiGroupTriangleMap = new Dictionary<string, Evolve.UI.UIPairTriangle>();
+
+        Dictionary<string, List<Evolve.UI.UIPairTriangle>> tickUpdateMap = new Dictionary<string, List<Evolve.UI.UIPairTriangle>>();
+
+        private void BtnAddGroup_Click(object sender, EventArgs e)
+        {
+            GroupTriangle g = new GroupTriangle();
+            g.Exchange1 = cbExchange1.SelectedItem.ToString();
+            g.Exchange2 = cbExchange2.SelectedItem.ToString();
+
+            g.AnchorSymbol = symAnchor.Text;
+            g.MiddleSymbol = symMiddle.Text;
+            g.TargetSymbol = symTarget.Text;
+
+            if (!groupTriangleMap.ContainsKey(g.Key))
+            {
+                groupTriangleMap.Add(g.Key, g);
+
+                //创建控件
+                Evolve.UI.UIPairTriangle ui = new Evolve.UI.UIPairTriangle();
+                ui.SetGroup(g);
+                ui.Reset();
+
+                flowLayoutPanel1.Controls.Add(ui);
+
+                foreach (Control c in flowLayoutPanel1.Controls)
+                {
+                    c.Margin = new Padding(1);
+                }
+
+                uiGroupTriangleMap.Add(g.Key, ui);
+
+                //订阅行情
+                SubscribeGroup(g);
+
+                List<Evolve.UI.UIPairTriangle> uilist;
+               
+                if (!tickUpdateMap.TryGetValue(g.SymbolA, out uilist))
+                {
+                    uilist = new List<Evolve.UI.UIPairTriangle>();
+                    tickUpdateMap.Add(g.SymbolA, uilist);
+                }
+                uilist.Add(ui);
+
+                if (!tickUpdateMap.TryGetValue(g.SymbolB, out uilist))
+                {
+                    uilist = new List<Evolve.UI.UIPairTriangle>();
+                    tickUpdateMap.Add(g.SymbolB, uilist);
+                }
+                uilist.Add(ui);
+
+                if (!tickUpdateMap.TryGetValue(g.SymbolC, out uilist))
+                {
+                    uilist = new List<Evolve.UI.UIPairTriangle>();
+                    tickUpdateMap.Add(g.SymbolC, uilist);
+                }
+                uilist.Add(ui);
+
+            }
         }
 
         private void BtnWatch_Click(object sender, EventArgs e)
@@ -55,6 +134,15 @@ namespace APIClient
 
             uiPairTriangle1.SetSymbols(sym1, sym2, sym3);
         }
+
+
+        void SubscribeGroup(GroupTriangle g)
+        {
+            dataClient.SubscribeSymbol(g.Exchange1, new string[] { g.SymbolA });
+            dataClient.SubscribeSymbol(g.Exchange2, new string[] { g.SymbolB,g.SymbolC });
+        }
+
+        
 
         private void BtnWatchSTEEM_Click(object sender, EventArgs e)
         {
@@ -126,16 +214,26 @@ namespace APIClient
             if (snapshot != null)
             {
                 logger.Info(obj.ToString());
-                if (obj.Exchange == "BINANCE" && obj.Symbol == "ETH/USDT")
+                //if (obj.Exchange == "BINANCE" && obj.Symbol == "ETH/USDT")
+                //{
+                //    tickItem1.GotTick(snapshot);
+                //}
+                //if (obj.Exchange == "HUOBI" && obj.Symbol == "ETH/USDT")
+                //{
+                //    tickItem2.GotTick(snapshot);
+                //}
+
+                //uiPairTriangle1.GotTick(snapshot);
+                List<Evolve.UI.UIPairTriangle> uilist;
+                if (tickUpdateMap.TryGetValue(obj.Symbol, out uilist))
                 {
-                    tickItem1.GotTick(snapshot);
-                }
-                if (obj.Exchange == "HUOBI" && obj.Symbol == "ETH/USDT")
-                {
-                    tickItem2.GotTick(snapshot);
+                    foreach (var ui in uilist)
+                    {
+                        ui.GotTick(snapshot);
+                    }
                 }
 
-                uiPairTriangle1.GotTick(snapshot);
+
             }
         }
 
