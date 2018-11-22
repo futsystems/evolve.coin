@@ -57,11 +57,35 @@ namespace Evolve.Common
                     }
                     catch (Exception ex)
                     {
-                        logger.Error("Register Symbol:{1} Error:{2}".Put(symbol, ex));
+                        logger.Error("Register Symbol:{0} Error:{1}".Put(symbol, ex));
                     }
                 }
             }
         }
+
+        public void OnUnRegisterSymbols(string[] symbollist)
+        {
+            logger.Info("UnRegister Market Data Symbols:" + string.Join(" ", symbollist.ToArray()));
+            if (this.IsRunning)
+            {
+                foreach (var symbol in symbollist)
+                {
+                    if (symbolRegisterList.Contains(symbol))
+                    {
+                        try
+                        {
+                            this.UnSubMarket(symbol);
+                            symbolRegisterList.Remove(symbol);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error("UnRegister Symbol:{1} Error:{2}".Put(symbol, ex));
+                        }
+                    }
+                }
+            }
+        }
+
 
 
         /// <summary>
@@ -74,6 +98,10 @@ namespace Evolve.Common
             logger.Info("SubMarketData  symbol:" + symbol);
         }
 
+        public virtual void UnSubMarket(string symbol)
+        {
+            logger.Info("UnSubMarketData  symbol:" + symbol);
+        }
         /// <summary>
         /// 启动DataFeed
         /// </summary>

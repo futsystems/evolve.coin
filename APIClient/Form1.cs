@@ -20,6 +20,15 @@ namespace APIClient
             InitializeComponent();
             ControlLogFactoryAdapter.SendDebugEvent += new Action<string>(ControlLogFactoryAdapter_SendDebugEvent);
             WireEvent();
+            InitControl();
+        }
+
+        void InitControl()
+        {
+            md_exchange.Items.Add("HUOBI");
+            md_exchange.Items.Add("BINANCE");
+            md_exchange.SelectedIndex = 0;
+
         }
 
         DataClient dataClient = null;
@@ -34,7 +43,8 @@ namespace APIClient
         {
             if (dataClient != null)
             {
-                dataClient.UnSubscribeSymbol(md_exchange.Text, md_symbol.Text);
+                var exchange = md_exchange.SelectedItem.ToString();
+                dataClient.UnSubscribeSymbol(exchange, new string[] { md_symbol.Text });
             }
         }
 
@@ -42,7 +52,8 @@ namespace APIClient
         {
             if (dataClient != null)
             {
-                dataClient.SubscribeSymbol(md_exchange.Text, new string[] { md_symbol.Text });
+                var exchange = md_exchange.SelectedItem.ToString();
+                dataClient.SubscribeSymbol(exchange, new string[] { md_symbol.Text });
             }
         }
 

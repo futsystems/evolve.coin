@@ -270,16 +270,22 @@ namespace Evolve.Common
             
         }
 
-        public void UnSubscribeSymbol(string exchange, string symbol)
+        public void UnSubscribeSymbol(string exchange, string[] symbols)
         {
-            foreach (var prefix in _prefixList)
+            foreach (var symbol in symbols)
             {
-                string p = prefix + symbol;
-                if (_subscriber != null)
+
+                foreach (var prefix in _prefixList)
                 {
-                    _subscriber.Unsubscribe(Encoding.UTF8.GetBytes(p));
+                    string p = prefix + symbol;
+                    if (_subscriber != null)
+                    {
+                        _subscriber.Unsubscribe(Encoding.UTF8.GetBytes(p));
+                    }
                 }
             }
+
+            this.UnRegistSymbols(exchange, symbols);
         }
 
         void RegistSymbols(string exchange,string[] symbols)
@@ -294,7 +300,20 @@ namespace Evolve.Common
             Message msg = Message.Deserialize(msgString);
             logger.Info("Response:{0}".Put(msgString));
 
-       
+        }
+
+        void UnRegistSymbols(string exchange, string[] symbols)
+        {
+            MDReqUnSubscribeSymbolRequest request = new MDReqUnSubscribeSymbolRequest();
+            request.Exchange = exchange;
+            request.Symbols = symbols;
+            _reqSocket.SendFrame(request.SerializeObject(), false);
+
+            var response = _reqSocket.ReceiveMultipartMessage();
+            var msgString = response.First.ConvertToString();
+            Message msg = Message.Deserialize(msgString);
+            logger.Info("Response:{0}".Put(msgString));
+
         }
     }
 }

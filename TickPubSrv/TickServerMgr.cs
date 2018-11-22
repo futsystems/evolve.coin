@@ -52,6 +52,7 @@ namespace TickPubSrv
                         Message msg = Message.Deserialize(content);
                         switch (msg.Type)
                         {
+                            //订阅行情数据
                             case MessageType.MD_REQ_REGISTER_SYMBOL:
                                 {
                                     pubSocket.SendMultipartMessage(message);
@@ -72,6 +73,34 @@ namespace TickPubSrv
                                     }
 
                                     foreach (var sym in toAdd)
+                                    {
+                                        symbols.Add(sym);
+                                    }
+                                    repSocket.SendFrame(Response.Success().SerializeObject(), false);
+                                    break;
+                                }
+                            //取消订阅行情数据
+                            case MessageType.MD_REQ_UNREGISTER_SYMBOL:
+                                {
+                                    pubSocket.SendMultipartMessage(message);
+                                    MDReqUnSubscribeSymbolRequest request = msg as MDReqUnSubscribeSymbolRequest;
+                                    List<string> symbols = null;
+                                    if (!registeredSymbolsMap.TryGetValue(request.Exchange, out symbols))
+                                    {
+                                        symbols = new List<string>();
+                                        registeredSymbolsMap.Add(request.Exchange, symbols);
+                                    }
+                                    List<string> toRemove = new List<string>();
+
+                                    foreach (var sym in request.Symbols)
+                                    {
+                                        if (symbols.Contains(sym))
+                                        {
+                                            toRemove.Add(sym);
+                                        }
+                                    }
+
+                                    foreach (var sym in toRemove)
                                     {
                                         symbols.Add(sym);
                                     }

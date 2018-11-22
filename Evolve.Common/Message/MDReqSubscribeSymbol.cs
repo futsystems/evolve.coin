@@ -22,4 +22,16 @@ namespace Evolve.Common
 
         public string Exchange { get; set; }
     }
+
+    public class MDReqUnSubscribeSymbolRequest : Request
+    {
+        public MDReqUnSubscribeSymbolRequest()
+        {
+            this.Type = MessageType.MD_REQ_UNREGISTER_SYMBOL;
+        }
+        public string[] Symbols { get; set; }
+
+        public string Exchange { get; set; }
+    }
+
 }

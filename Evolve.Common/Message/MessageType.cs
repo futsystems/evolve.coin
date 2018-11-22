@@ -11,6 +11,7 @@ namespace Evolve.Common
         /// 订阅合约
         /// </summary>
         MD_REQ_REGISTER_SYMBOL,
+        MD_REQ_UNREGISTER_SYMBOL,
 
         MD_QRY_REGISTED_SYMBOL,
 

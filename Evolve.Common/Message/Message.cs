@@ -28,6 +28,8 @@ namespace Evolve.Common
 
                     case MessageType.MD_REQ_REGISTER_SYMBOL:
                         return msgContainer.ToObject<MDReqSubscribeSymbolRequest>();
+                    case MessageType.MD_REQ_UNREGISTER_SYMBOL:
+                        return msgContainer.ToObject<MDReqUnSubscribeSymbolRequest>();
 
                     case MessageType.MD_QRY_REGISTED_SYMBOL:
                         return msgContainer.ToObject<MDQrySymbolRegistedRequest>();

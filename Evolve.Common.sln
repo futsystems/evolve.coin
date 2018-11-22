@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evolve.Common", "Evolve.Common\Evolve.Common.csproj", "{088D2319-A111-438D-A5E7-F7AB270877B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFeed.Huobi", "DataFeed.Huobi\DataFeed.Huobi.csproj", "{B5A36BDF-DF47-4608-8821-39379F2702BB}"
@@ -14,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evolve.UI", "Evolve.UI\Evolve.UI.csproj", "{107BB39F-B94B-4C29-8ABB-8B81DEEF475A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFeed.GateIO", "DataFeed.GateIO\DataFeed.GateIO.csproj", "{BD15C375-ADAA-4AB5-A067-9DD38D83B0F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFeed.Binance", "DataFeed.Binance\DataFeed.Binance.csproj", "{03A6793C-44DE-4ED5-BB1F-4B0466F90060}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,18 @@ Global
 		{BD15C375-ADAA-4AB5-A067-9DD38D83B0F6}.Release|Mixed Platforms.Build.0 = Release|x86
 		{BD15C375-ADAA-4AB5-A067-9DD38D83B0F6}.Release|x86.ActiveCfg = Release|x86
 		{BD15C375-ADAA-4AB5-A067-9DD38D83B0F6}.Release|x86.Build.0 = Release|x86
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Debug|x86.Build.0 = Debug|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Release|x86.ActiveCfg = Release|Any CPU
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,5 +109,6 @@ Global
 		{B5A36BDF-DF47-4608-8821-39379F2702BB} = {0F0B051E-8C25-47A8-A07C-0047A9F04447}
 		{231BA2D6-2FFC-4592-BFBA-B267764A3FEB} = {0F0B051E-8C25-47A8-A07C-0047A9F04447}
 		{BD15C375-ADAA-4AB5-A067-9DD38D83B0F6} = {0F0B051E-8C25-47A8-A07C-0047A9F04447}
+		{03A6793C-44DE-4ED5-BB1F-4B0466F90060} = {0F0B051E-8C25-47A8-A07C-0047A9F04447}
 	EndGlobalSection
 EndGlobal

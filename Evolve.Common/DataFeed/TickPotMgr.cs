@@ -134,6 +134,16 @@ namespace Evolve.Common
                             }
                             break;
                         }
+                    case MessageType.MD_REQ_UNREGISTER_SYMBOL:
+                        {
+                            MDReqUnSubscribeSymbolRequest request = msg as MDReqUnSubscribeSymbolRequest;
+
+                            if (this._datafeed != null && this._datafeed.Exchange == request.Exchange)
+                            {
+                                this._datafeed.OnUnRegisterSymbols(request.Symbols);
+                            }
+                            break;
+                        }
                     default:
                         logger.Warn("Request type:" + msg.Type + " msg:" + msgContent);
                         break;
