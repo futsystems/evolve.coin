@@ -28,8 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Evolve.Common.SymbolInfo symbolInfo3 = new Evolve.Common.SymbolInfo();
+            Evolve.Common.SymbolInfo symbolInfo4 = new Evolve.Common.SymbolInfo();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tickItem2 = new Evolve.UI.TickItem();
+            this.tickItem1 = new Evolve.UI.TickItem();
             this.md_exchange = new System.Windows.Forms.ComboBox();
             this.btnUnSubscribe = new System.Windows.Forms.Button();
             this.md_symbol = new System.Windows.Forms.TextBox();
@@ -44,11 +48,15 @@
             this.md_server = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnWatchSTEEM = new System.Windows.Forms.Button();
+            this.btnWatchTriVET = new System.Windows.Forms.Button();
+            this.uiPairTriangle1 = new Evolve.UI.UIPairTriangle();
             this.debugControl1 = new Evolve.UI.DebugControl();
-            this.tickItem1 = new Evolve.UI.TickItem();
-            this.tickItem2 = new Evolve.UI.TickItem();
+            this.btnWatch = new System.Windows.Forms.Button();
+            this.tSymbol = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -59,7 +67,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(893, 231);
+            this.tabControl1.Size = new System.Drawing.Size(893, 310);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -82,10 +90,34 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(885, 205);
+            this.tabPage1.Size = new System.Drawing.Size(885, 284);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "行情";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tickItem2
+            // 
+            this.tickItem2.Location = new System.Drawing.Point(431, 82);
+            this.tickItem2.Name = "tickItem2";
+            this.tickItem2.Size = new System.Drawing.Size(237, 63);
+            symbolInfo3.Exchange = null;
+            symbolInfo3.PriceDecimalPlace = 0;
+            symbolInfo3.SizeDecimalPlace = 0;
+            symbolInfo3.Symbol = null;
+            this.tickItem2.Symbol = symbolInfo3;
+            this.tickItem2.TabIndex = 15;
+            // 
+            // tickItem1
+            // 
+            this.tickItem1.Location = new System.Drawing.Point(431, 13);
+            this.tickItem1.Name = "tickItem1";
+            this.tickItem1.Size = new System.Drawing.Size(237, 63);
+            symbolInfo4.Exchange = null;
+            symbolInfo4.PriceDecimalPlace = 0;
+            symbolInfo4.SizeDecimalPlace = 0;
+            symbolInfo4.Symbol = null;
+            this.tickItem1.Symbol = symbolInfo4;
+            this.tickItem1.TabIndex = 14;
             // 
             // md_exchange
             // 
@@ -201,40 +233,73 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.tSymbol);
+            this.tabPage2.Controls.Add(this.btnWatch);
+            this.tabPage2.Controls.Add(this.btnWatchSTEEM);
+            this.tabPage2.Controls.Add(this.btnWatchTriVET);
+            this.tabPage2.Controls.Add(this.uiPairTriangle1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(885, 205);
+            this.tabPage2.Size = new System.Drawing.Size(885, 284);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnWatchSTEEM
+            // 
+            this.btnWatchSTEEM.Location = new System.Drawing.Point(493, 35);
+            this.btnWatchSTEEM.Name = "btnWatchSTEEM";
+            this.btnWatchSTEEM.Size = new System.Drawing.Size(75, 23);
+            this.btnWatchSTEEM.TabIndex = 2;
+            this.btnWatchSTEEM.Text = "WatchSTEEM";
+            this.btnWatchSTEEM.UseVisualStyleBackColor = true;
+            // 
+            // btnWatchTriVET
+            // 
+            this.btnWatchTriVET.Location = new System.Drawing.Point(493, 6);
+            this.btnWatchTriVET.Name = "btnWatchTriVET";
+            this.btnWatchTriVET.Size = new System.Drawing.Size(75, 23);
+            this.btnWatchTriVET.TabIndex = 1;
+            this.btnWatchTriVET.Text = "WatchVET";
+            this.btnWatchTriVET.UseVisualStyleBackColor = true;
+            // 
+            // uiPairTriangle1
+            // 
+            this.uiPairTriangle1.Location = new System.Drawing.Point(0, 0);
+            this.uiPairTriangle1.Name = "uiPairTriangle1";
+            this.uiPairTriangle1.Size = new System.Drawing.Size(487, 215);
+            this.uiPairTriangle1.TabIndex = 0;
             // 
             // debugControl1
             // 
             this.debugControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.debugControl1.EnableSearching = true;
             this.debugControl1.ExternalTimeStamp = 0;
-            this.debugControl1.Location = new System.Drawing.Point(0, 231);
+            this.debugControl1.Location = new System.Drawing.Point(0, 310);
             this.debugControl1.Margin = new System.Windows.Forms.Padding(2);
             this.debugControl1.Name = "debugControl1";
-            this.debugControl1.Size = new System.Drawing.Size(893, 289);
+            this.debugControl1.Size = new System.Drawing.Size(893, 210);
             this.debugControl1.TabIndex = 0;
             this.debugControl1.TimeStamps = true;
             this.debugControl1.UseExternalTimeStamp = false;
             // 
-            // tickItem1
+            // btnWatch
             // 
-            this.tickItem1.Location = new System.Drawing.Point(431, 13);
-            this.tickItem1.Name = "tickItem1";
-            this.tickItem1.Size = new System.Drawing.Size(237, 63);
-            this.tickItem1.TabIndex = 14;
+            this.btnWatch.Location = new System.Drawing.Point(613, 79);
+            this.btnWatch.Name = "btnWatch";
+            this.btnWatch.Size = new System.Drawing.Size(75, 23);
+            this.btnWatch.TabIndex = 3;
+            this.btnWatch.Text = "Watch";
+            this.btnWatch.UseVisualStyleBackColor = true;
             // 
-            // tickItem2
+            // tSymbol
             // 
-            this.tickItem2.Location = new System.Drawing.Point(431, 82);
-            this.tickItem2.Name = "tickItem2";
-            this.tickItem2.Size = new System.Drawing.Size(237, 63);
-            this.tickItem2.TabIndex = 15;
+            this.tSymbol.Location = new System.Drawing.Point(493, 79);
+            this.tSymbol.Name = "tSymbol";
+            this.tSymbol.Size = new System.Drawing.Size(100, 21);
+            this.tSymbol.TabIndex = 4;
+            this.tSymbol.Text = "VET";
             // 
             // Form1
             // 
@@ -248,6 +313,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -273,6 +340,11 @@
         private System.Windows.Forms.ComboBox md_exchange;
         private Evolve.UI.TickItem tickItem2;
         private Evolve.UI.TickItem tickItem1;
+        private Evolve.UI.UIPairTriangle uiPairTriangle1;
+        private System.Windows.Forms.Button btnWatchTriVET;
+        private System.Windows.Forms.Button btnWatchSTEEM;
+        private System.Windows.Forms.Button btnWatch;
+        private System.Windows.Forms.TextBox tSymbol;
     }
 }
 

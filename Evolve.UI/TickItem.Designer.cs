@@ -34,13 +34,14 @@
             this.askSize1 = new System.Windows.Forms.Label();
             this.bidSize1 = new System.Windows.Forms.Label();
             this.size = new System.Windows.Forms.Label();
+            this.symbol = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // price
             // 
             this.price.AutoSize = true;
             this.price.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.price.Location = new System.Drawing.Point(9, 10);
+            this.price.Location = new System.Drawing.Point(3, 17);
             this.price.Name = "price";
             this.price.Size = new System.Drawing.Size(89, 19);
             this.price.TabIndex = 0;
@@ -49,7 +50,7 @@
             // askPrice1
             // 
             this.askPrice1.AutoSize = true;
-            this.askPrice1.Location = new System.Drawing.Point(114, 10);
+            this.askPrice1.Location = new System.Drawing.Point(113, 17);
             this.askPrice1.Name = "askPrice1";
             this.askPrice1.Size = new System.Drawing.Size(47, 12);
             this.askPrice1.TabIndex = 1;
@@ -58,7 +59,7 @@
             // bidPrice1
             // 
             this.bidPrice1.AutoSize = true;
-            this.bidPrice1.Location = new System.Drawing.Point(114, 35);
+            this.bidPrice1.Location = new System.Drawing.Point(113, 42);
             this.bidPrice1.Name = "bidPrice1";
             this.bidPrice1.Size = new System.Drawing.Size(47, 12);
             this.bidPrice1.TabIndex = 2;
@@ -67,7 +68,7 @@
             // askSize1
             // 
             this.askSize1.AutoSize = true;
-            this.askSize1.Location = new System.Drawing.Point(175, 10);
+            this.askSize1.Location = new System.Drawing.Point(188, 17);
             this.askSize1.Name = "askSize1";
             this.askSize1.Size = new System.Drawing.Size(47, 12);
             this.askSize1.TabIndex = 3;
@@ -76,7 +77,7 @@
             // bidSize1
             // 
             this.bidSize1.AutoSize = true;
-            this.bidSize1.Location = new System.Drawing.Point(175, 35);
+            this.bidSize1.Location = new System.Drawing.Point(188, 42);
             this.bidSize1.Name = "bidSize1";
             this.bidSize1.Size = new System.Drawing.Size(47, 12);
             this.bidSize1.TabIndex = 4;
@@ -85,16 +86,26 @@
             // size
             // 
             this.size.AutoSize = true;
-            this.size.Location = new System.Drawing.Point(11, 35);
+            this.size.Location = new System.Drawing.Point(5, 42);
             this.size.Name = "size";
             this.size.Size = new System.Drawing.Size(35, 12);
             this.size.TabIndex = 5;
             this.size.Text = "0.005";
             // 
+            // symbol
+            // 
+            this.symbol.AutoSize = true;
+            this.symbol.Location = new System.Drawing.Point(-2, 0);
+            this.symbol.Name = "symbol";
+            this.symbol.Size = new System.Drawing.Size(89, 12);
+            this.symbol.TabIndex = 6;
+            this.symbol.Text = "VET/USDT-HUOBI";
+            // 
             // TickItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.symbol);
             this.Controls.Add(this.size);
             this.Controls.Add(this.bidSize1);
             this.Controls.Add(this.askSize1);
@@ -102,7 +113,7 @@
             this.Controls.Add(this.askPrice1);
             this.Controls.Add(this.price);
             this.Name = "TickItem";
-            this.Size = new System.Drawing.Size(237, 63);
+            this.Size = new System.Drawing.Size(247, 61);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -116,5 +127,6 @@
         private System.Windows.Forms.Label askSize1;
         private System.Windows.Forms.Label bidSize1;
         private System.Windows.Forms.Label size;
+        private System.Windows.Forms.Label symbol;
     }
 }

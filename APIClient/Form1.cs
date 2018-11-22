@@ -37,6 +37,49 @@ namespace APIClient
             btnCreate.Click += new EventHandler(btnCreate_Click);
             btnSubscribe.Click += new EventHandler(btnSubscribe_Click);
             btnUnSubscribe.Click += new EventHandler(btnUnSubscribe_Click);
+
+            btnWatchTriVET.Click += BtnWatchTriVET_Click;
+            btnWatchSTEEM.Click += BtnWatchSTEEM_Click;
+            btnWatch.Click += BtnWatch_Click;
+        }
+
+        private void BtnWatch_Click(object sender, EventArgs e)
+        {
+            SymbolInfo sym1 = new SymbolInfo() { Exchange = "HUOBI", Symbol = string.Format("{0}/USDT",tSymbol.Text), PriceDecimalPlace = 5, SizeDecimalPlace = 1 };
+            SymbolInfo sym3 = new SymbolInfo() { Exchange = "BINANCE", Symbol = "BTC/USDT", PriceDecimalPlace = 2, SizeDecimalPlace = 5 };
+            SymbolInfo sym2 = new SymbolInfo() { Exchange = "BINANCE", Symbol = string.Format("{0}/BTC",tSymbol.Text), PriceDecimalPlace = 8, SizeDecimalPlace = 0 };
+
+
+            dataClient.SubscribeSymbol("HUOBI", new string[] { string.Format("{0}/USDT", tSymbol.Text) });
+            dataClient.SubscribeSymbol("BINANCE", new string[] { string.Format("{0}/BTC", tSymbol.Text), "BTC/USDT" });
+
+            uiPairTriangle1.SetSymbols(sym1, sym2, sym3);
+        }
+
+        private void BtnWatchSTEEM_Click(object sender, EventArgs e)
+        {
+            SymbolInfo sym1 = new SymbolInfo() { Exchange = "HUOBI", Symbol = "STEEM/USDT", PriceDecimalPlace = 5, SizeDecimalPlace = 1 };
+            SymbolInfo sym3 = new SymbolInfo() { Exchange = "BINANCE", Symbol = "BTC/USDT", PriceDecimalPlace = 2, SizeDecimalPlace = 5 };
+            SymbolInfo sym2 = new SymbolInfo() { Exchange = "BINANCE", Symbol = "STEEM/BTC", PriceDecimalPlace = 7, SizeDecimalPlace = 0 };
+
+
+            dataClient.SubscribeSymbol("HUOBI", new string[] { "STEEM/USDT" });
+            dataClient.SubscribeSymbol("BINANCE", new string[] { "STEEM/BTC", "BTC/USDT" });
+
+            uiPairTriangle1.SetSymbols(sym1, sym2, sym3);
+        }
+
+        private void BtnWatchTriVET_Click(object sender, EventArgs e)
+        {
+            SymbolInfo sym1 = new SymbolInfo() { Exchange = "HUOBI", Symbol = "VET/USDT" ,PriceDecimalPlace=5,SizeDecimalPlace=1};
+            SymbolInfo sym2 = new SymbolInfo() { Exchange = "BINANCE", Symbol = "VET/BTC",PriceDecimalPlace=8,SizeDecimalPlace=0 };
+            SymbolInfo sym3 = new SymbolInfo() { Exchange = "BINANCE", Symbol = "BTC/USDT",PriceDecimalPlace=2,SizeDecimalPlace=5 };
+
+            dataClient.SubscribeSymbol("HUOBI", new string[] { "VET/USDT" });
+            dataClient.SubscribeSymbol("BINANCE", new string[] { "VET/BTC" ,"BTC/USDT"});
+
+            uiPairTriangle1.SetSymbols(sym1, sym2, sym3);
+          
         }
 
         void btnUnSubscribe_Click(object sender, EventArgs e)
@@ -91,6 +134,8 @@ namespace APIClient
                 {
                     tickItem2.GotTick(snapshot);
                 }
+
+                uiPairTriangle1.GotTick(snapshot);
             }
         }
 

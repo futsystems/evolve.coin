@@ -5,11 +5,15 @@ using System.Text;
 
 namespace Evolve.Common
 {
-    public struct SymbolInfo
+    public class SymbolInfo
     {
         public string Symbol { get; set; }
 
         public string Exchange { get; set; }
+
+        public int PriceDecimalPlace { get; set; }
+
+        public int SizeDecimalPlace { get; set; }
     }
 
     public class MDReqSubscribeSymbolRequest:Request

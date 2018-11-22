@@ -58,6 +58,12 @@
     <Compile Include="TickItem.Designer.cs">
       <DependentUpon>TickItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIPairTriangle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIPairTriangle.Designer.cs">
+      <DependentUpon>UIPairTriangle.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DebugControl.resx">
@@ -65,6 +71,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TickItem.resx">
       <DependentUpon>TickItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIPairTriangle.resx">
+      <DependentUpon>UIPairTriangle.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

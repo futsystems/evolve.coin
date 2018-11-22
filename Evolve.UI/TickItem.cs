@@ -15,6 +15,29 @@ namespace Evolve.UI
         public TickItem()
         {
             InitializeComponent();
+
+            this.Symbol = new SymbolInfo();
+        }
+
+        SymbolInfo symbolinfo;
+        public SymbolInfo Symbol {
+            get
+            {
+                return symbolinfo;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    symbol.Text = "Null";
+                }
+                else
+                {
+                    symbolinfo = value;
+                    symbol.Text = string.Format("{0}-{1}", symbolinfo.Symbol, symbolinfo.Exchange);
+                }
+            }
         }
 
         public void GotTick(Tick k)
@@ -38,12 +61,14 @@ namespace Evolve.UI
 
         public int PriceDecimalPlace
         {
-            get { return 2; }
+            get { return symbolinfo.PriceDecimalPlace; }
         }
 
         public int SizeDecimalPlace
         {
-            get { return 7; }
+            get { return symbolinfo.SizeDecimalPlace; }
         }
+
+        
     }
 }
