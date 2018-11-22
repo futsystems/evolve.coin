@@ -24,12 +24,20 @@ using BinanceExchange.API.Websockets;
 
 namespace DataFeed.Binance
 {
-    
+
+    /// <summary>
+    /// Tick数据由成交数据和报价数据组成
+    /// </summary>
+    class MarketDataSockets
+    {
+        public Guid QuoteSocket;
+        public Guid TradeSocket;
+    }
 
     internal class BinanceFeed:DataFeedBase
     {
         ConcurrentDictionary<string, Tick> feedTickMap = new ConcurrentDictionary<string, Tick>();
-        Dictionary<string, Guid> depthUpdateSubscribeMap = new Dictionary<string, Guid>();
+        Dictionary<string, MarketDataSockets> marketDataSocketMap = new Dictionary<string, MarketDataSockets>();
 
 
         public override string Exchange { get { return "BINANCE"; } }
@@ -44,6 +52,7 @@ namespace DataFeed.Binance
             {
                 ApiKey = "eS7IxPvi5UqjPkLiRM37ADLloBp3iVwzdoOWOIqnDUUcEMH0hzVvsQ9fFwh9mwFU",
                 SecretKey = "GYa8F52fYbwEW7hKnWP2tnL0E1whsBwH1WahTLpgip2DsTaDGxMiI10C8YJEvxX6",
+               
             });
         }
 
@@ -51,6 +60,9 @@ namespace DataFeed.Binance
         {
             logger.Info("start socket");
             webSocket = new InstanceBinanceWebSocketClient(client);
+
+            //查询已注册合约执行预注册
+            this.OnConnected();
 
             /*
             var socketId = webSocket.ConnectToDepthWebSocket("BTCUSDT", data =>
@@ -75,10 +87,17 @@ namespace DataFeed.Binance
             string[] tmp = symbol.Split('/');//标准合约格式为BTC/USDT 这里按照对应市场规范进行处理
             string feedSymbol = (tmp[0] + tmp[1]).ToUpper();
 
-            Guid targetSocket;
-            if(depthUpdateSubscribeMap.TryGetValue(symbol,out targetSocket))
+            MarketDataSockets sockets;
+            if (!marketDataSocketMap.TryGetValue(symbol, out sockets))
             {
-                webSocket.CloseWebSocketInstance(targetSocket);
+                sockets = new MarketDataSockets();
+                marketDataSocketMap.Add(symbol, sockets);
+            }
+            else
+            {
+                //是否需要注销之前的sockets
+                webSocket.CloseWebSocketInstance(sockets.QuoteSocket);
+                webSocket.CloseWebSocketInstance(sockets.TradeSocket);
             }
 
             /* 通过调试发现，ConnectToDepthWebSocket会创建一个websocket链接，也就是每订阅一个合约 就会创建一个websocket链接
@@ -86,13 +105,59 @@ namespace DataFeed.Binance
              * 
              * 
              * */
-            var socketId = webSocket.ConnectToDepthWebSocket(feedSymbol, data =>
-            {
-                //logger.Info("BTCUSDT data:" + data.SerializeObject());
-                logger.Info(feedSymbol);
-            });
+            //var socketId = webSocket.ConnectToDepthWebSocket(feedSymbol, data =>
+            //{
+            //    //logger.Info("BTCUSDT data:" + data.SerializeObject());
+            //    logger.Info(feedSymbol);
+            //});
+            //depthUpdateSubscribeMap[symbol] = socketId;
 
-            depthUpdateSubscribeMap[symbol] = socketId;
+            //成交数据
+            sockets.TradeSocket = webSocket.ConnectToTradesWebSocket(feedSymbol, data =>
+             {
+                 //UTC time
+                 //logger.Info("trade:" + data.SerializeObject());
+                 Tick snapshot = null;
+                 if (feedTickMap.TryGetValue(feedSymbol, out snapshot))
+                 {
+                     DateTime dt = data.TradeTime;
+                     snapshot.Date = Utils.ToTLDate(dt);
+                     snapshot.Time = Utils.ToTLTime(dt);
+                     snapshot.Price = data.Price;
+                     snapshot.Size = data.Quantity;
+
+                     Tick nk = Tick.NewTick(snapshot, "X");
+                     this.NewTick(nk);
+                 }
+                    
+             });
+
+            //盘口数据
+            sockets.QuoteSocket = webSocket.ConnectToPartialDepthWebSocket(feedSymbol,PartialDepthLevels.Five, data =>
+            {
+                //logger.Info("PartialDepth:" + data.SerializeObject());
+                Tick snapshot = null;
+                if (feedTickMap.TryGetValue(feedSymbol, out snapshot))
+                {
+                    DateTime dt = data.EventTime;
+                    snapshot.Date = Utils.ToTLDate(dt);
+                    snapshot.Time = Utils.ToTLTime(dt);
+
+                    snapshot.AskPrice1 = data.Asks[0].Price;
+                    snapshot.AskSize1 = data.Asks[0].Quantity;
+
+                    //snapshot.AskPrice2 = data.Asks[1].Price;
+                    //snapshot.AskSize2 = data.Asks[1].Quantity;
+
+                    snapshot.BidPrice1 = data.Bids[0].Price;
+                    snapshot.BidSize1 = data.Bids[0].Quantity;
+
+                    //其他深度报价数据
+                    Tick nk = Tick.NewTick(snapshot, "Q");
+                    this.NewTick(nk);
+
+                }
+            });
 
             if (!feedTickMap.ContainsKey(feedSymbol))
             {
@@ -112,28 +177,35 @@ namespace DataFeed.Binance
 
         public override void UnSubMarket(string symbol)
         {
-            Guid targetSocket;
-            if (depthUpdateSubscribeMap.TryGetValue(symbol, out targetSocket))
+            MarketDataSockets sockets;
+            if (marketDataSocketMap.TryGetValue(symbol, out sockets))
             {
-                webSocket.CloseWebSocketInstance(targetSocket);
-                depthUpdateSubscribeMap.Remove(symbol);
+                webSocket.CloseWebSocketInstance(sockets.QuoteSocket);
+                webSocket.CloseWebSocketInstance(sockets.TradeSocket);
+                marketDataSocketMap.Remove(symbol);
             }
+
+            //清空本地缓存
+            string[] tmp = symbol.Split('/');//标准合约格式为BTC/USDT 这里按照对应市场规范进行处理
+            string feedSymbol = (tmp[0] + tmp[1]).ToUpper();
+            Tick k;
+            feedTickMap.TryRemove(feedSymbol, out k);
         }
 
 
-        private async Task<Dictionary<string, DepthCacheObject>> BuildLocalDepthCache(IBinanceClient client)
+        private async Task<Dictionary<string, DepthCacheObject>> BuildLocalDepthCache(string feedSymbol)
         {
             // Code example of building out a Dictionary local cache for a symbol using deltas from the WebSocket
-            var localDepthCache = new Dictionary<string, DepthCacheObject> {{ "BTCUSDT", new DepthCacheObject()
+            var localDepthCache = new Dictionary<string, DepthCacheObject> {{feedSymbol, new DepthCacheObject()
             {
                 Asks = new Dictionary<decimal, decimal>(),
                 Bids = new Dictionary<decimal, decimal>(),
             }}};
-            var bnbBtcDepthCache = localDepthCache["BTCUSDT"];
+            var bnbBtcDepthCache = localDepthCache[feedSymbol];
 
             // Get Order Book, and use Cache
             //获取当前OrderBook，包含了所有的挂单价格和挂单数量
-            OrderBookResponse depthResults = await client.GetOrderBook("BTCUSDT", true, 100);
+            OrderBookResponse depthResults = await client.GetOrderBook(feedSymbol, true, 100);
             //Populate our depth cache
             depthResults.Asks.ForEach(a =>
             {
@@ -155,22 +227,22 @@ namespace DataFeed.Binance
             using (var binanceWebSocketClient = new DisposableBinanceWebSocketClient(client))
             {
                 //获取深度数据
-                binanceWebSocketClient.ConnectToDepthWebSocket("BTCUSDT", data =>
+                binanceWebSocketClient.ConnectToPartialDepthWebSocket(feedSymbol,PartialDepthLevels.Five, data =>
                 {
                     //UpdateId 递增 通过 UpdateId来判定是否有更新 DepthUpdate包含变动数据
-                    if (data.UpdateId > lastUpdateId)
-                    {
-                        data.BidDepthDeltas.ForEach((bd) =>
-                        {
-                            CorrectlyUpdateDepthCache(bd, bnbBtcDepthCache.Bids);
-                        });
-                        data.AskDepthDeltas.ForEach((ad) =>
-                        {
-                            CorrectlyUpdateDepthCache(ad, bnbBtcDepthCache.Asks);
-                        });
-                    }
+                    //if (data..UpdateId > lastUpdateId)
+                    //{
+                    //    data.BidDepthDeltas.ForEach((bd) =>
+                    //    {
+                    //        CorrectlyUpdateDepthCache(bd, bnbBtcDepthCache.Bids);
+                    //    });
+                    //    data.AskDepthDeltas.ForEach((ad) =>
+                    //    {
+                    //        CorrectlyUpdateDepthCache(ad, bnbBtcDepthCache.Asks);
+                    //    });
+                    //}
 
-                    lastUpdateId = data.UpdateId;
+                    //lastUpdateId = data.UpdateId;
                     //logger.Info("data:" + bnbBtcDepthCache.SerializeObject());
                     logger.Info("depth update");
                     

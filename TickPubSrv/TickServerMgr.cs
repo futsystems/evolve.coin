@@ -102,7 +102,7 @@ namespace TickPubSrv
 
                                     foreach (var sym in toRemove)
                                     {
-                                        symbols.Add(sym);
+                                        symbols.Remove(sym);
                                     }
                                     repSocket.SendFrame(Response.Success().SerializeObject(), false);
                                     break;
