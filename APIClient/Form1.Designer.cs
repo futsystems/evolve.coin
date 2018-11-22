@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.md_exchange = new System.Windows.Forms.ComboBox();
             this.btnUnSubscribe = new System.Windows.Forms.Button();
             this.md_symbol = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -44,7 +45,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.debugControl1 = new Evolve.UI.DebugControl();
-            this.md_exchange = new System.Windows.Forms.ComboBox();
+            this.tickItem1 = new Evolve.UI.TickItem();
+            this.tickItem2 = new Evolve.UI.TickItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +64,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.tickItem2);
+            this.tabPage1.Controls.Add(this.tickItem1);
             this.tabPage1.Controls.Add(this.md_exchange);
             this.tabPage1.Controls.Add(this.btnUnSubscribe);
             this.tabPage1.Controls.Add(this.md_symbol);
@@ -82,6 +86,14 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "行情";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // md_exchange
+            // 
+            this.md_exchange.FormattingEnabled = true;
+            this.md_exchange.Location = new System.Drawing.Point(73, 75);
+            this.md_exchange.Name = "md_exchange";
+            this.md_exchange.Size = new System.Drawing.Size(81, 20);
+            this.md_exchange.TabIndex = 13;
             // 
             // btnUnSubscribe
             // 
@@ -210,13 +222,19 @@
             this.debugControl1.TimeStamps = true;
             this.debugControl1.UseExternalTimeStamp = false;
             // 
-            // md_exchange
+            // tickItem1
             // 
-            this.md_exchange.FormattingEnabled = true;
-            this.md_exchange.Location = new System.Drawing.Point(73, 75);
-            this.md_exchange.Name = "md_exchange";
-            this.md_exchange.Size = new System.Drawing.Size(81, 20);
-            this.md_exchange.TabIndex = 13;
+            this.tickItem1.Location = new System.Drawing.Point(431, 13);
+            this.tickItem1.Name = "tickItem1";
+            this.tickItem1.Size = new System.Drawing.Size(237, 63);
+            this.tickItem1.TabIndex = 14;
+            // 
+            // tickItem2
+            // 
+            this.tickItem2.Location = new System.Drawing.Point(431, 82);
+            this.tickItem2.Name = "tickItem2";
+            this.tickItem2.Size = new System.Drawing.Size(237, 63);
+            this.tickItem2.TabIndex = 15;
             // 
             // Form1
             // 
@@ -253,6 +271,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnUnSubscribe;
         private System.Windows.Forms.ComboBox md_exchange;
+        private Evolve.UI.TickItem tickItem2;
+        private Evolve.UI.TickItem tickItem1;
     }
 }
 

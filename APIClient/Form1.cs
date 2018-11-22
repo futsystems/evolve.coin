@@ -73,9 +73,25 @@ namespace APIClient
             }
         }
 
+        TickTracker tickTracker = new TickTracker();
+
         void dataClient_OnTick(Tick obj)
         {
-            logger.Info(obj.ToString());
+            tickTracker.UpdateTick(obj);
+            Tick snapshot = tickTracker[obj.Exchange, obj.Symbol];
+
+            if (snapshot != null)
+            {
+                logger.Info(obj.ToString());
+                if (obj.Exchange == "BINANCE" && obj.Symbol == "ETH/USDT")
+                {
+                    tickItem1.GotTick(snapshot);
+                }
+                if (obj.Exchange == "HUOBI" && obj.Symbol == "ETH/USDT")
+                {
+                    tickItem2.GotTick(snapshot);
+                }
+            }
         }
 
         void dataClient_OnDisconnected()

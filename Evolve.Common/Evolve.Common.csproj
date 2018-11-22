@@ -80,6 +80,7 @@
     <Compile Include="DataFeed\TickPot.cs" />
     <Compile Include="DataFeed\TickPotMgr.cs" />
     <Compile Include="TickTracker.cs" />
+    <Compile Include="Utils_decimal.cs" />
     <Compile Include="Utils_json.cs" />
     <Compile Include="Utils_string.cs" />
     <Compile Include="Utils.cs" />
