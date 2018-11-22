@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Evolve.Common.SymbolInfo symbolInfo3 = new Evolve.Common.SymbolInfo();
-            Evolve.Common.SymbolInfo symbolInfo4 = new Evolve.Common.SymbolInfo();
+            Evolve.Common.SymbolInfo symbolInfo1 = new Evolve.Common.SymbolInfo();
+            Evolve.Common.SymbolInfo symbolInfo2 = new Evolve.Common.SymbolInfo();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.md_exchange = new System.Windows.Forms.ComboBox();
@@ -214,7 +214,7 @@
             this.md_server.Name = "md_server";
             this.md_server.Size = new System.Drawing.Size(89, 21);
             this.md_server.TabIndex = 1;
-            this.md_server.Text = "127.0.0.1";
+            this.md_server.Text = "md.tickcloud.net";
             // 
             // label1
             // 
@@ -430,11 +430,11 @@
             this.tickItem2.Location = new System.Drawing.Point(431, 82);
             this.tickItem2.Name = "tickItem2";
             this.tickItem2.Size = new System.Drawing.Size(237, 63);
-            symbolInfo3.Exchange = null;
-            symbolInfo3.PriceDecimalPlace = 0;
-            symbolInfo3.SizeDecimalPlace = 0;
-            symbolInfo3.Symbol = null;
-            this.tickItem2.Symbol = symbolInfo3;
+            symbolInfo1.Exchange = null;
+            symbolInfo1.PriceDecimalPlace = 0;
+            symbolInfo1.SizeDecimalPlace = 0;
+            symbolInfo1.Symbol = null;
+            this.tickItem2.Symbol = symbolInfo1;
             this.tickItem2.TabIndex = 15;
             // 
             // tickItem1
@@ -442,11 +442,11 @@
             this.tickItem1.Location = new System.Drawing.Point(431, 13);
             this.tickItem1.Name = "tickItem1";
             this.tickItem1.Size = new System.Drawing.Size(237, 63);
-            symbolInfo4.Exchange = null;
-            symbolInfo4.PriceDecimalPlace = 0;
-            symbolInfo4.SizeDecimalPlace = 0;
-            symbolInfo4.Symbol = null;
-            this.tickItem1.Symbol = symbolInfo4;
+            symbolInfo2.Exchange = null;
+            symbolInfo2.PriceDecimalPlace = 0;
+            symbolInfo2.SizeDecimalPlace = 0;
+            symbolInfo2.Symbol = null;
+            this.tickItem1.Symbol = symbolInfo2;
             this.tickItem1.TabIndex = 14;
             // 
             // uiPairTriangle1
